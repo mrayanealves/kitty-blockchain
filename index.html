@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.82.0">
+    <title>Kitty</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/heroes/">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>  
+    <div class="container">
+      <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+          <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+          <span class="fs-4"><b>Kitty</b></span>
+        </a>
+    
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createVaquinha">
+              Criar vaquinha
+            </button>          
+          </li>
+        </ul>
+      </header>
+    </div>
+
+    <div class="container">
+      <div class="px-4 py-5 my-5 text-center">
+        <img class="d-block mx-auto mb-4" src="./img/vaquinha.png" alt="" width="250" height="250">
+        <h1 class="display-5 fw-bold">Kitty, a sua vaquinha online</h1>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-4">Que tal engordar a vaquinha de alguém?</p>
+        </div>
+      </div>
+  
+      <div class="container row" id="allKitties">Nenhuma vaquinha criada</div>
+
+      <footer class="pt-3 mt-4 text-muted border-top text-center">
+        &copy; 2021 @ Rayane
+      </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createVaquinha" tabindex="-1" aria-labelledby="createVaquinha" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createVaquinha">Criar vaquinha</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <!-- Form -->
+          <div class="modal-body">
+            <div class="mb-3">
+              <input type="text" class="form-control" id="title" placeholder="Título">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="description" placeholder="Descrição">
+            </div>
+            <div class="mb-3">
+              <input type="number" class="form-control" id="goal" placeholder="Meta">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="userName" placeholder="Nome do autor">
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" onclick="createKitty()">Criar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./js/bootstrap.min.js"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/abi.js"></script>
+    <script src="./js/script.js"></script>
+  </body>
+</html>
