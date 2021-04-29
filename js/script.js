@@ -1,4 +1,4 @@
-var contractAddress = "0xFAd4b1eE12F4a2CcD6178f895686AFDB466369E8";
+var contractAddress = "0x204e46eec174452C14e316Ce8B58f9FFAe4905Bd";
 
 document.addEventListener("DOMContentLoaded", onDocumentLoad);
 function onDocumentLoad() {
@@ -52,27 +52,29 @@ function getAllKitties() {
     return DApp.contracts.Kitties.methods.getAllKitties().call().then(kitties => {
         var html = ''
         console.log(kitties)
-        for(i in kitties) {
-            html += 
-            `<div class='col-md-4 pb-4'>` + 
-            `<div class='card' style='width: 18rem;'>` + 
-            `<div class='card-body'>` +
-            `<div class='row'>` +
-            `<div class='col-md-2'>` +
-            `<img src="./img/user.png" class="rounded float-start" width="40" height="40">` +
-            `</div>` +
-            `<div class='col-md-8'>` +
-            `<small class='card-title'>${kitties[i]["user"]["name"]}</small><br>` + 
-            `</div>` +
-            `</div><br/>` +
-            `<h5 class='card-title'>${kitties[i]["title"]}</h5>` + 
-            `<p class='card-text'>${kitties[i]["description"]}</p>` + 
-            `<small class='card-text'>Meta: ${kitties[i]["goal"]}</small><br/><br/>` + 
-            `<button type='button' class='btn btn-primary' onclick='getKitty(${kitties[i]["id"]})'>Doar</button></div></div></div>` +
-            `</div>`;
-        }
+        if(kitties.length > 0) {
+            for(i in kitties) {
+                html += 
+                `<div class='col-md-4 pb-4'>` + 
+                `<div class='card' style='width: 18rem;'>` + 
+                `<div class='card-body'>` +
+                `<div class='row'>` +
+                `<div class='col-md-2'>` +
+                `<img src="./img/user.png" class="rounded float-start" width="40" height="40">` +
+                `</div>` +
+                `<div class='col-md-8'>` +
+                `<small class='card-title'>${kitties[i]["user"]["name"]}</small><br>` + 
+                `</div>` +
+                `</div><br/>` +
+                `<h5 class='card-title'>${kitties[i]["title"]}</h5>` + 
+                `<p class='card-text'>${kitties[i]["description"]}</p>` + 
+                `<small class='card-text'>Meta: ${kitties[i]["goal"]}</small><br/><br/>` + 
+                `<button type='button' class='btn btn-primary' onclick='getKitty(${kitties[i]["id"]})'>Doar</button></div></div></div>` +
+                `</div>`;
 
-        document.getElementById("allKitties").innerHTML = html
+                document.getElementById("allKitties").innerHTML = html
+            }
+        }
     });
 }
 
@@ -80,10 +82,8 @@ function createKitty() {
     const id = Math.floor(Math.random() * 1000000000);  
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
-    const goal = document.getElementById("goal").value;
+    let goal = document.getElementById("goal").value;
     const userName = document.getElementById("userName").value;
-
-    console.log([id, title, description, goal, userName])
 
     return DApp.contracts.Kitties.methods.createKitty(
         id, 

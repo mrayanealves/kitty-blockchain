@@ -1,4 +1,4 @@
-var contractAddress = "0xFAd4b1eE12F4a2CcD6178f895686AFDB466369E8";
+var contractAddress = "0x204e46eec174452C14e316Ce8B58f9FFAe4905Bd";
 
 document.addEventListener("DOMContentLoaded", onDocumentLoad);
 function onDocumentLoad() {
@@ -46,37 +46,50 @@ const DApp = {
     render: async function () {
         console.log(sessionStorage.getItem("kittyId"));
         getKitty();
+        isOwner();
     },
 };
 
 function getKitty() {
     return DApp.contracts.Kitties.methods.getKitty(sessionStorage.getItem("kittyId")).call().then(kitty => {
-        const percentage = parseInt(100 * parseInt(kitty["collected"]) / parseInt(kitty["goal"]), 10)
-        
+        let collected = kitty["collected"]/1000000000000000000;
+        let goal = kitty["goal"];
+        let percentage = parseInt(collected * 100 / goal);
+
         document.getElementById("detailsKitty").innerHTML = `<small>De ${kitty["user"]["name"]}</small>` +
-            `<h1 class="display-5 fw-bold">${kitty["title"]}</h1>` + 
-            `<div class="col-lg-6 mx-auto">` + 
-            `<p class="lead mb-4">${kitty["description"]}</p>` +
-            `</div>` +
-            `<div class="row">` + 
-            `<div class="col">` +
-            `<p class="lead mb-4">Meta: ${kitty["goal"]}</p>` +
-            `</div>` +
-            `<div class="col">` +
-            `<p class="lead mb-4">Arrecadado: ${kitty["collected"]}</p>` +
-            `</div>` +
-            `</div>` + 
-            `<div class='progress'>` + 
-            `<div class='progress-bar progress-bar-striped progress-bar-animated bg-success'` + 
-            `role='progressbar' aria-valuenow='${kitty["collected"]}' aria-valuemin='0' aria-valuemax='${kitty["goal"]}' style='width: ${percentage}%'></div></div><br/>` +
-            `<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#doarVaquinha'>Doar para a vaquinha</button>`
-            ;
+        `<h1 class="display-5 fw-bold">${kitty["title"]}</h1>` + 
+        `<div class="col-lg-6 mx-auto">` + 
+        `<p class="lead mb-4">${kitty["description"]}</p>` +
+        `</div>` +
+        `<div class="row">` + 
+        `<div class="col">` +
+        `<p class="lead mb-4">Meta: ${goal}</p>` +
+        `</div>` +
+        `<div class="col">` +
+        `<p class="lead mb-4">Arrecadado: ${collected}</p>` +
+        `</div>` +
+        `</div>` + 
+        `<div class='progress'>` + 
+        `<div class='progress-bar progress-bar-striped progress-bar-animated bg-success'` + 
+        `role='progressbar' aria-valuenow='${collected}' aria-valuemin='0' aria-valuemax='${goal}' style='width: ${percentage}%'></div></div><br/>`
+        ;
+    });
+}
+
+function isOwner() {
+    return DApp.contracts.Kitties.methods.isOwner(sessionStorage.getItem("kittyId")).call({ from : DApp.account }).then(valueIsOwner => {
+        console.log(valueIsOwner);
+        if(!valueIsOwner) {
+            document.getElementById("action").innerHTML = `<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#doarVaquinha'>Doar para a vaquinha</button>`;
+        } else {
+            document.getElementById("action").innerHTML = `<button type='button' class='btn btn-secondary' onclick='finishKitty()'>Encerrar a vaquinha</button>`;
+        }
     });
 }
 
 function donate() {
     const value = document.getElementById("value").value;
-    let preco = 100000000000000000 * value;
+    let preco = 1000000000000000000 * value;
     return DApp.contracts.Kitties.methods.donate(
         sessionStorage.getItem("kittyId")
         ).send(
@@ -86,6 +99,15 @@ function donate() {
             }
         ).then(
             jQuery("#doarVaquinha").modal("hide")
+        );
+}
+
+function finishKitty() {
+    console.log("chegou aqui");
+    return DApp.contracts.Kitties.methods.finishKitty(
+        sessionStorage.getItem("kittyId")
+        ).send(
+            { from: DApp.account}
         );
 }
 
